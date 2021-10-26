@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeroesComponent } from './pages/heroes/heroes.component';
 
-import { HeroProfileComponent } from '../hero-profile/hero-profile.component'
-
+import { HeroProfileComponent } from '../hero-profile/hero-profile.component';
+import { ListadoDeHeroesComponent } from '../listado-de-heroes/listado-de-heroes.component';
+import { AuthRoutingModule } from './auth-routing.module';
 
 @NgModule({
-  declarations: [HeroesComponent],
+  declarations: [HeroProfileComponent,ListadoDeHeroesComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    AuthRoutingModule
   ]
 })
 export class AuthModule { }

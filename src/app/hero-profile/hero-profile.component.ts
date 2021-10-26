@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Heroe } from '../classes/heroe';
 import { HeroesService } from '../heroes.service';
@@ -18,7 +18,7 @@ export class HeroProfileComponent implements OnInit {
   public question_modal: string;
   public team:string = "";
 
-  constructor(private route: ActivatedRoute, private heroesService: HeroesService, private _location: Location) { }
+  constructor(private route: ActivatedRoute, private heroesService: HeroesService, private _location: Location, ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -35,7 +35,7 @@ export class HeroProfileComponent implements OnInit {
   }
 
   goBack() {
-    this._location.back();
+    
   }
 
   getTeam(team):void{

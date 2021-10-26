@@ -9,6 +9,9 @@ const routes: Routes = [
   { path: 'heroe/:id', component: HeroProfileComponent},
   { path: 'modal-poll', component: ModalPollComponent},
   { path: '**', redirectTo: '/listado-heroes'}
+  // { path:'',
+  //   loadChildren:()=> import('./auth/auth.module').then( m => m.AuthModule)
+  // }
 ];
 
 @NgModule({
