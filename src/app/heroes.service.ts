@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Heroe } from './classes/heroe';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class HeroesService {
@@ -65,6 +66,20 @@ export class HeroesService {
     else{
       return "";
     }
+  }
+
+  listarHeroes(nameStartsWith?: string, page?: number){
+    if (page || page === 0) {
+      this.page = page;
+    }
+    console.log((this.page * this.step))
+    const url = this.protocol + this.ApiUrl + 'characters?apikey=56d2cc44b1c84eb7c6c9673565a9eb4b'
+    + '&offset=' + (this.page * this.step)
+    + (nameStartsWith ? ('&nameStartsWith=' + nameStartsWith) : '');
+    console.log(this.page, this.step)
+    console.log(url)
+    console.log(this.http.get(url).pipe(map((data) => data || [])));
+    return this.http.get(url).pipe(map((dato:any) => dato.data.results || []))
   }
 
 }

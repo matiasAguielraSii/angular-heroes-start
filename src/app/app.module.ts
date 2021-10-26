@@ -11,6 +11,12 @@ import { HeroProfileComponent } from './hero-profile/hero-profile.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { ModalPollComponent } from './modal-poll/modal-poll.component';
 import { CapitalizePipe } from './capitalize.pipe';
+import { StoreModule } from '@ngrx/store';
+import { counterReducer } from './store/counter.reducer';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
+
+
 
 @NgModule({
   declarations: [
@@ -25,7 +31,9 @@ import { CapitalizePipe } from './capitalize.pipe';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot({heroe: counterReducer}),
+    InfiniteScrollModule
   ],
   providers: [HeroesService],
   bootstrap: [AppComponent]
