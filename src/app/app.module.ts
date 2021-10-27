@@ -12,8 +12,12 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { ModalPollComponent } from './modal-poll/modal-poll.component';
 import { CapitalizePipe } from './capitalize.pipe';
 import { StoreModule } from '@ngrx/store';
-import { counterReducer } from './store/counter.reducer';
+import { counterReducer} from './store/counter.reducer';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
+
+
+
 
 
 

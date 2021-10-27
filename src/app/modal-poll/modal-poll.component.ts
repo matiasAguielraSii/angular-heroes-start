@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Heroe } from '../classes/heroe';
 
 @Component({
   selector: 'app-modal-poll',

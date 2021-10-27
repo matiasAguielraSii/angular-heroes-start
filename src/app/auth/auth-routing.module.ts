@@ -6,12 +6,9 @@ import { ListadoDeHeroesComponent } from '../listado-de-heroes/listado-de-heroes
 
 const routes: Routes=[
   {
-    path:'',
-    children: [
-      {path: 'heroe/:id', component : HeroProfileComponent},
-      {path: 'listado-heroes', component : ListadoDeHeroesComponent},
-      {path: '**',redirectTo:'listado-heroes'}
-    ]
+    path:':id',
+    component :HeroProfileComponent
+   
   }
 ]
 

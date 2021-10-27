@@ -5,6 +5,12 @@ import { Heroe } from '../classes/heroe';
 import { HeroesService } from '../heroes.service';
 import { Location } from '@angular/common';
 import { ModalPollComponent } from '../modal-poll/modal-poll.component';
+import { select, Store } from '@ngrx/store';
+
+import {   buscarHeroeById, heroTeam } from '../store/counter.actions';
+import {  uniqueHero } from '../store/counter.selector';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-hero-profile',
@@ -14,40 +20,57 @@ import { ModalPollComponent } from '../modal-poll/modal-poll.component';
 export class HeroProfileComponent implements OnInit {
   @ViewChild('modal', { static: true }) modal;
   private id;
-  public heroe: Heroe;
+  public heroe: Heroe[];
   public question_modal: string;
   public team:string = "";
+  public albumHeores$:Observable<Heroe[]>
 
-  constructor(private route: ActivatedRoute, private heroesService: HeroesService, private _location: Location, ) { }
+  dataLoad:boolean;
+ 
+
+  constructor(private route: ActivatedRoute, 
+              private heroesService: HeroesService,
+              private _route: Router,
+              private store:Store<{heroe:Heroe[]}>) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.id = params.id;
-      this.heroesService.getHeroe(this.id).subscribe(data => {
-        const temp = data.data.results[0];
-        this.heroe = new Heroe(temp.id, temp.name, temp.description, temp. modified, temp.thumbnail, temp.resourceURI,this.heroesService.getTeamColor(temp.id));
-        console.log("Tiene equipo?");
-        console.log(this.heroe.teamColor);
-        this.team = this.heroe.teamColor;
-      });
-    });
-    
+    this.buscarHero();
   }
 
   goBack() {
     
+    this._route.navigate['/listado-heroes'];
   }
 
   getTeam(team):void{
     console.log("Color: "+team);
     this.team = team;
-    this.heroesService.teams.set(this.heroe.id, this.team);
+    // this.store.dispatch(heroTeam({}));
+    // this.heroesService.teams.set(this.heroe.id, this.team);
   }
 
   launchModal():void{
     //this.question_modal="¿Dónde ubicarías a tu súper héroe?";
     this.question_modal="¿En cual grupo quieres colocar a tu súper héroe?";
     this.modal.toggle_modal();
+  }
+
+  buscarHero()
+  {
+    this.dataLoad =true
+    this.route.params.subscribe(params => {
+      this.id = params.id;
+      this.heroesService.getHeroe(this.id).subscribe(data =>{
+        this.store.dispatch(buscarHeroeById({heroe: data }))
+        this.albumHeores$ = this.store.pipe(select(uniqueHero(this.id)));
+        this.dataLoad = false;
+        this.heroe = data;
+      },
+      error=> {this.dataLoad = false;}
+      );
+      
+    })
+
   }
 
 }

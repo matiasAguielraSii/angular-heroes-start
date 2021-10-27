@@ -1,17 +1,11 @@
 <h1 class="text-center">{{title}}</h1>
 <div class="row">
   <form (ngSubmit)="submitSearch()">
-    <div class="form-group col-xs-12">
+    <div class="form-group col-xs-12" >
       <input type="text" [(ngModel)]="searchString" name="searchString" class="form-control" id="search" placeholder="Búsqueda de super-héroe">
     </div>
   </form>
-  <!-- <div *ngFor="let heroe of heroesService.heroes; let i = index;" class="col-xs-12 col-sm-6 col-md-3">
-      [routerLink]="'/heroe/' + heroe.id" === (click)="go_to(heroe.id)"
-    <a (click)="go_to(heroe.id)" class="hero-entry" [style.border-color]="heroesService['group_colors'][heroe.teamColor]" [style.background-image]="'url(' + heroe.thumbnail.path + '.' + heroe.thumbnail.extension + ')'">
-      <span>{{heroe.name}}</span>
-    </a>
-  </div> -->
-  <button  class="btn btn-secondary">Secondary</button>
+  
   <div  *ngFor="let heroe of albumHeores | async" class="col-xs-12 col-sm-6 col-md-3">
     <a (click)="go_to(heroe.id)" class="hero-entry" [style.border-color]="heroesService['group_colors'][heroe.teamColor]" [style.background-image]="'url(' + heroe.thumbnail.path + '.' + heroe.thumbnail.extension + ')'" >
       <span>{{heroe.name}}</span>
@@ -22,4 +16,5 @@
     
   </div>
 </div>
-<spinner #spi></spinner>
+
+<spinner *ngIf="dataLoad" #spi></spinner>

@@ -3,8 +3,10 @@ import { Heroe } from '../classes/heroe';
 import { HeroesService } from '../heroes.service';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { addHeroe } from '../store/counter.actions';
-import { Heroes } from '../store/counter.selector';
+import { addHeroe, buscarHeroeById } from '../store/counter.actions';
+import { Heroes, uniqueHero } from '../store/counter.selector';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-listado-de-heroes',
@@ -21,31 +23,42 @@ export class ListadoDeHeroesComponent implements OnInit {
   limit = 20;
   page = 1;
   showButton:boolean = false;
+  //llamado al selector
   public albumHeores = this.store.pipe(select(Heroes));
+
+  dataLoad:boolean = false;
+
   // The child component : spinner
   @ViewChild('spi', { static: true }) spinner;
-  /* public heroes: Array<Heroe> = []; */
+
 
   constructor(private heroesService: HeroesService,
-              private router:Router,
-              private store:Store<{heroe:Heroe[]}>
-              )
-              {
+    private router:Router,
+    private store:Store<{heroe:Heroe[]}>
+    )
+    {}
 
-              }
+  ngOnInit() {
+    this.listarHeroes(1);
+  }
 
   submitSearch() {
     this.heroesService.resetPager();
-    this.heroesService.getHeroes(this.searchString);
+    this.heroesService.listarHeroes(this.searchString).subscribe((data:any)=>{
+      console.log(data);
+      this.store.dispatch(buscarHeroeById({heroe: data as Heroe[]}))
+    });
   }
 
   go_to(id){
     this.router.navigateByUrl('/heroe/'+id);
   }
-  listarHeroes():void{
+  listarHeroes(primera?:number):void{
+    if(primera){
+      this.heroesService.resetPager();
+    }
     this.heroesService.listarHeroes(this.searchString).subscribe((data) => {
       this.store.dispatch(addHeroe({heroe: data as Heroe[]}))
-      
     })
     
   }
@@ -55,13 +68,5 @@ export class ListadoDeHeroesComponent implements OnInit {
         this.store.dispatch(addHeroe({heroe: data as Heroe[]}));
       });
   }
-
- 
-  ngOnInit() {
-    this.heroesService.getHeroes();
-    this.listarHeroes();
-  }
-
- 
 
 }

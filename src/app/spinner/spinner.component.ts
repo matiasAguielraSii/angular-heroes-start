@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'spinner',
@@ -7,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class SpinnerComponent implements OnInit {
-  show_spinner: boolean = false;
+  @Input()show_spinner: boolean = true;
 
+
+  @Output() spinner: EventEmitter<any> = new EventEmitter();
   constructor() { }
 
   ngOnInit() {

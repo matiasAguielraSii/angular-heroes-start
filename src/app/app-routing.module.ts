@@ -5,13 +5,20 @@ import { HeroProfileComponent } from './hero-profile/hero-profile.component';
 import { ModalPollComponent } from './modal-poll/modal-poll.component';
 
 const routes: Routes = [
-  { path: 'listado-heroes', component: ListadoDeHeroesComponent},
-  { path: 'heroe/:id', component: HeroProfileComponent},
-  { path: 'modal-poll', component: ModalPollComponent},
-  { path: '**', redirectTo: '/listado-heroes'}
-  // { path:'',
-  //   loadChildren:()=> import('./auth/auth.module').then( m => m.AuthModule)
-  // }
+  { 
+  path: 'listado-heroes',
+   component: ListadoDeHeroesComponent
+  },
+  { 
+    path: 'heroe',
+    loadChildren:()=>import('./auth/auth-routing.module').then(m => m.AuthRoutingModule)
+    },
+  { 
+    path: 'modal-poll',
+     component: ModalPollComponent},
+  { 
+    path: '**', redirectTo: '/listado-heroes'
+  }
 ];
 
 @NgModule({
