@@ -3,9 +3,8 @@ import { Heroe } from '../classes/heroe';
 import { HeroesService } from '../heroes.service';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { addHeroe, buscarHeroeById } from '../store/counter.actions';
-import { Heroes, uniqueHero } from '../store/counter.selector';
-import { Observable } from 'rxjs';
+import { addHeroe, backPage  } from '../store/counter.actions';
+import { Heroes } from '../store/counter.selector';
 
 
 @Component({
@@ -25,7 +24,7 @@ export class ListadoDeHeroesComponent implements OnInit {
   showButton:boolean = false;
   //llamado al selector
   public albumHeores = this.store.pipe(select(Heroes));
-
+  
   dataLoad:boolean = false;
 
   // The child component : spinner
@@ -37,9 +36,11 @@ export class ListadoDeHeroesComponent implements OnInit {
     private store:Store<{heroe:Heroe[]}>
     )
     {}
-
+  inicia:number=0;
   ngOnInit() {
-    this.listarHeroes();
+
+    console.log(this.inicia);
+    this.inicia==0?this.listarHeroes():'';
     this.heroesService.getTotal();
     
   }
@@ -48,7 +49,7 @@ export class ListadoDeHeroesComponent implements OnInit {
     this.heroesService.resetPager();
     this.heroesService.listarHeroes(this.searchString).subscribe((data:any)=>{
       console.log(data);
-      this.store.dispatch(buscarHeroeById({heroe: data as Heroe[]}))
+      this.store.dispatch(addHeroe({heroe: data as Heroe[]}))
     });
   }
 
@@ -69,6 +70,7 @@ export class ListadoDeHeroesComponent implements OnInit {
           teamColor:e.teamColor
         }
       }) 
+      this.inicia = 1
       this.store.dispatch(addHeroe({heroe: superHeroe as Heroe[]}))
     })
     
@@ -87,14 +89,15 @@ export class ListadoDeHeroesComponent implements OnInit {
   }
 
   prevPage():void{
-    this.dataLoad = true;
-    this.heroesService.listarHeroes(this.searchString, this.heroesService.page - 1).subscribe((data) => {
-      this.dataLoad = false;
-      this.store.dispatch(addHeroe({heroe: data as Heroe[]}));
-    },
-    error=>{
-      this.dataLoad = error;
-    });
+    
+    // this.heroesService.listarHeroes(this.searchString, this.heroesService.page - 1).subscribe((data) => {
+    //   this.dataLoad = false;
+    //   this.store.dispatch(addHeroe({heroe: data as Heroe[]}));
+    // },
+    // error=>{
+    //   this.dataLoad = error;
+    // });
+    this.store.dispatch(backPage());
   }
 
 }

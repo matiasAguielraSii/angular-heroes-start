@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { ModalPollComponent } from '../modal-poll/modal-poll.component';
 import { select, Store } from '@ngrx/store';
 
-import {   buscarHeroeById, heroTeam } from '../store/counter.actions';
+import {   buscarHero, heroTeam } from '../store/counter.actions';
 import {  uniqueHero } from '../store/counter.selector';
 import { Observable } from 'rxjs';
 
@@ -46,7 +46,7 @@ export class HeroProfileComponent implements OnInit {
     
     console.log("Color: "+team);
     this.team = team;
-    this.store.dispatch(heroTeam({heroe:this.heroe, color:this.team}));
+    this.store.dispatch(heroTeam({heroe:this.heroe, color:this.team,id:this.id}));
     // this.heroesService.teams.set(this.heroe.id, this.team);
   }
 
@@ -56,36 +56,14 @@ export class HeroProfileComponent implements OnInit {
     this.modal.toggle_modal();
   }
 
-  buscarHero()
-  {
-    this.dataLoad =true
+  
+  buscarHero(){
     this.route.params.subscribe(params => {
       this.id = params.id;
-      this.heroesService.getHeroe(this.id).subscribe(data =>{
-        let superHeroe:Heroe[];
-        superHeroe = data.map((e:Heroe)=>{ 
-          return   {
-            id : e.id,
-            name: e.name,
-            description: e.description,
-            modified: new Date,
-            thumbnail: e.thumbnail,
-            resourceURI: e.resourceURI,
-            teamColor:''
-          }
-        })
-        console.log(data) 
-        console.log(superHeroe)
-        this.store.dispatch(buscarHeroeById({heroe: superHeroe }))
-        this.albumHeores$ = this.store.pipe(select(uniqueHero(this.id)));
-        this.dataLoad = false;
-        this.heroe = superHeroe;
-      },
-      error=> {this.dataLoad = false;}
-      );
-      
-    })
-
+      this.store.dispatch(buscarHero());
+      this.albumHeores$ = this.store.pipe(select(uniqueHero(this.id)));
+    } )
   }
+  
 
 }

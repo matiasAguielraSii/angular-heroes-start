@@ -18,7 +18,6 @@ export const Heroes = createSelector(
 export const uniqueHero = (heroeId:string) =>createSelector(
     heroeRootSelector,
     (heroe:Heroe[])=> {
-       
         let parseNumber = Number(heroeId);
         let uniqHero = heroe.filter( h => { 
             if(Number(h.id) == parseNumber){
@@ -26,7 +25,7 @@ export const uniqueHero = (heroeId:string) =>createSelector(
             } 
            
         });
-        return(heroe);
+        return(uniqHero);
     }
 )
 
