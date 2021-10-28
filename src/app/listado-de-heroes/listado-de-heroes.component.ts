@@ -89,7 +89,7 @@ export class ListadoDeHeroesComponent implements OnInit {
             modified: new Date,
             thumbnail: e.thumbnail,
             resourceURI: e.resourceURI,
-            teamColor:'ka'
+            teamColor: e.teamColor
           }
         }) 
         this.dataLoad = false ;
