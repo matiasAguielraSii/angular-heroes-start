@@ -41,11 +41,12 @@ export class HeroProfileComponent implements OnInit {
     
     this._route.navigate['/listado-heroes'];
   }
-
-  getTeam(team):void{
+  colorHeroe : string;
+  getTeam(team:string):void{
+    
     console.log("Color: "+team);
     this.team = team;
-    // this.store.dispatch(heroTeam({}));
+    this.store.dispatch(heroTeam({heroe:this.heroe, color:this.team}));
     // this.heroesService.teams.set(this.heroe.id, this.team);
   }
 
@@ -61,10 +62,24 @@ export class HeroProfileComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id = params.id;
       this.heroesService.getHeroe(this.id).subscribe(data =>{
-        this.store.dispatch(buscarHeroeById({heroe: data }))
+        let superHeroe:Heroe[];
+        superHeroe = data.map((e:Heroe)=>{ 
+          return   {
+            id : e.id,
+            name: e.name,
+            description: e.description,
+            modified: new Date,
+            thumbnail: e.thumbnail,
+            resourceURI: e.resourceURI,
+            teamColor:''
+          }
+        })
+        console.log(data) 
+        console.log(superHeroe)
+        this.store.dispatch(buscarHeroeById({heroe: superHeroe }))
         this.albumHeores$ = this.store.pipe(select(uniqueHero(this.id)));
         this.dataLoad = false;
-        this.heroe = data;
+        this.heroe = superHeroe;
       },
       error=> {this.dataLoad = false;}
       );

@@ -77,9 +77,7 @@ export class HeroesService {
     + '&offset=' + (this.page * this.step)
     + (nameStartsWith ? ('&nameStartsWith=' + nameStartsWith) : '');
     return this.http.get(url).subscribe((dato:any) => {
-
       this.total = Math.ceil(dato.data.total / this.step);
-      console.log(this.total);
     })
   }
 

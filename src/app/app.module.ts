@@ -16,12 +16,6 @@ import { counterReducer} from './store/counter.reducer';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
-
-
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

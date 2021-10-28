@@ -41,7 +41,6 @@ export class ListadoDeHeroesComponent implements OnInit {
   ngOnInit() {
     this.listarHeroes();
     this.heroesService.getTotal();
-    console.log(this.heroesService.page , this.heroesService.total);
     
   }
 
@@ -56,10 +55,21 @@ export class ListadoDeHeroesComponent implements OnInit {
   go_to(id){
     this.router.navigateByUrl('/heroe/'+id);
   }
-  listarHeroes(primera?:number):void{
-  
-    this.heroesService.listarHeroes(this.searchString).subscribe((data) => {
-      this.store.dispatch(addHeroe({heroe: data as Heroe[]}))
+  listarHeroes():void{
+    this.heroesService.listarHeroes(this.searchString).subscribe((data:Heroe[]) => {
+      let superHeroe:Heroe[];
+      superHeroe = data.map((e:Heroe)=>{ 
+        return {
+          id : e.id,
+          name: e.name,
+          description: e.description,
+          modified: new Date,
+          thumbnail: e.thumbnail,
+          resourceURI: e.resourceURI,
+          teamColor:e.teamColor
+        }
+      }) 
+      this.store.dispatch(addHeroe({heroe: superHeroe as Heroe[]}))
     })
     
   }
