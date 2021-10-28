@@ -12,8 +12,10 @@
     </a>
   </div>
  
-  <div class="paginator col-xs-12" infiniteScroll [infiniteScrollDistance]="2"  (scrolled)="onScroll()" >
-    
+  <div class="paginator col-xs-12">
+    <a class="paginator-prev" (click)="prevPage()" *ngIf="heroesService.page > 0">Prev</a>
+    Página {{heroesService.page + 1}} de {{heroesService.total}}
+    <a class="paginator-next" (click)="nextPage()" *ngIf="heroesService.page < heroesService.total - 1">Next</a>
   </div>
 </div>
 

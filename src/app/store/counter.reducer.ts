@@ -10,13 +10,14 @@ let arreglo=[];
 const _counterReducer = createReducer(
   initialState,
   on(addHeroe, (state,{ heroe }) => {
-    let arr =state.concat([...heroe])
-    if(inicializador != 0){
-      arr.splice(0,1);
-      inicializador = 0
-    }
-    arreglo = [...arr]
-    return arr;
+    console.log({heroe})
+    // let arr =state.concat([...heroe])
+    // if(inicializador != 0){
+    //   arr.splice(0,1);
+    //   inicializador = 0
+    // }
+    arreglo = [...heroe]
+    return [...heroe];
   }),
    on(buscarHeroeById,(state,{heroe}) =>{
     inicializador = 1;

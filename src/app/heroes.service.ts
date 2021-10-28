@@ -72,17 +72,29 @@ export class HeroesService {
       return "";
     }
   }
- 
+  getTotal(nameStartsWith?: string, page?: number){
+    const url = this.protocol + this.ApiUrl + 'characters?&apikey=f5ef91e82e31aeb7015457c893f6f4c9'
+    + '&offset=' + (this.page * this.step)
+    + (nameStartsWith ? ('&nameStartsWith=' + nameStartsWith) : '');
+    return this.http.get(url).subscribe((dato:any) => {
+
+      this.total = Math.ceil(dato.data.total / this.step);
+      console.log(this.total);
+    })
+  }
 
   listarHeroes(nameStartsWith?: string, page?: number){
     if (page || page === 0) {
       this.page = page;
     }
-   
+    
+    
     const url = this.protocol + this.ApiUrl + 'characters?&apikey=f5ef91e82e31aeb7015457c893f6f4c9'
     + '&offset=' + (this.page * this.step)
     + (nameStartsWith ? ('&nameStartsWith=' + nameStartsWith) : '');
-    return this.http.get(url).pipe(map((dato:any) => dato.data.results || []))
+    return this.http.get(url).pipe(map((dato:any) => 
+      dato.data.results || []
+      ))
   }
 
 }

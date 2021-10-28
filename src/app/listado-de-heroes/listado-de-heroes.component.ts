@@ -39,7 +39,10 @@ export class ListadoDeHeroesComponent implements OnInit {
     {}
 
   ngOnInit() {
-    this.listarHeroes(1);
+    this.listarHeroes();
+    this.heroesService.getTotal();
+    console.log(this.heroesService.page , this.heroesService.total);
+    
   }
 
   submitSearch() {
@@ -54,19 +57,34 @@ export class ListadoDeHeroesComponent implements OnInit {
     this.router.navigateByUrl('/heroe/'+id);
   }
   listarHeroes(primera?:number):void{
-    if(primera){
-      this.heroesService.resetPager();
-    }
+  
     this.heroesService.listarHeroes(this.searchString).subscribe((data) => {
       this.store.dispatch(addHeroe({heroe: data as Heroe[]}))
     })
     
   }
 
-  onScroll():void{
+  nextPage():void{
+      this.dataLoad = true;
       this.heroesService.listarHeroes(this.searchString, this.heroesService.page + 1).subscribe((data) => {
+        this.dataLoad = false ;
         this.store.dispatch(addHeroe({heroe: data as Heroe[]}));
-      });
+      },
+      error =>{
+        this.dataLoad = false ;
+      }
+      );
+  }
+
+  prevPage():void{
+    this.dataLoad = true;
+    this.heroesService.listarHeroes(this.searchString, this.heroesService.page - 1).subscribe((data) => {
+      this.dataLoad = false;
+      this.store.dispatch(addHeroe({heroe: data as Heroe[]}));
+    },
+    error=>{
+      this.dataLoad = error;
+    });
   }
 
 }
