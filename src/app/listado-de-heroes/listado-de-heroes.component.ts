@@ -24,7 +24,7 @@ export class ListadoDeHeroesComponent implements OnInit {
   showButton:boolean = false;
   //llamado al selector
   public albumHeores = this.store.pipe(select(Heroes));
-  
+  superHeroe:Heroe[];
   dataLoad:boolean = false;
 
   // The child component : spinner
@@ -39,7 +39,7 @@ export class ListadoDeHeroesComponent implements OnInit {
   inicia:number=0;
   ngOnInit() {
 
-    console.log(this.inicia);
+    
     this.inicia==0?this.listarHeroes():'';
     this.heroesService.getTotal();
     
@@ -48,7 +48,6 @@ export class ListadoDeHeroesComponent implements OnInit {
   submitSearch() {
     this.heroesService.resetPager();
     this.heroesService.listarHeroes(this.searchString).subscribe((data:any)=>{
-      console.log(data);
       this.store.dispatch(addHeroe({heroe: data as Heroe[]}))
     });
   }
@@ -70,8 +69,11 @@ export class ListadoDeHeroesComponent implements OnInit {
           teamColor:e.teamColor
         }
       }) 
-      this.inicia = 1
-      this.store.dispatch(addHeroe({heroe: superHeroe as Heroe[]}))
+      
+      if(this.heroesService.cargo == 1){
+        this.store.dispatch(addHeroe({heroe: superHeroe as Heroe[]}))
+      }
+      
     })
     
   }
@@ -79,25 +81,48 @@ export class ListadoDeHeroesComponent implements OnInit {
   nextPage():void{
       this.dataLoad = true;
       this.heroesService.listarHeroes(this.searchString, this.heroesService.page + 1).subscribe((data) => {
+        let superHeroa = data.map((e:Heroe)=>{ 
+          return {
+            id : e.id,
+            name: e.name,
+            description: e.description,
+            modified: new Date,
+            thumbnail: e.thumbnail,
+            resourceURI: e.resourceURI,
+            teamColor:'ka'
+          }
+        }) 
         this.dataLoad = false ;
-        this.store.dispatch(addHeroe({heroe: data as Heroe[]}));
+        this.store.dispatch(addHeroe({heroe: superHeroa  as Heroe[]}));
       },
       error =>{
         this.dataLoad = false ;
       }
       );
   }
-
+  
   prevPage():void{
+    this.spinner = true;
+    this.heroesService.listarHeroes(this.searchString, this.heroesService.page - 1).subscribe((data) => {
+      let superHeroa = data.map((e:Heroe)=>{ 
+        return {
+          id : e.id,
+          name: e.name,
+          description: e.description,
+          modified: new Date,
+          thumbnail: e.thumbnail,
+          resourceURI: e.resourceURI,
+          teamColor:e.teamColor
+        }
+      }) 
+      this.dataLoad = false;
+      this.store.dispatch(addHeroe({heroe: superHeroa as Heroe[]}));
+      this.spinner = false;
+    },
+    error=>{
+      this.dataLoad = error;
+    });
     
-    // this.heroesService.listarHeroes(this.searchString, this.heroesService.page - 1).subscribe((data) => {
-    //   this.dataLoad = false;
-    //   this.store.dispatch(addHeroe({heroe: data as Heroe[]}));
-    // },
-    // error=>{
-    //   this.dataLoad = error;
-    // });
-    this.store.dispatch(backPage());
   }
 
 }

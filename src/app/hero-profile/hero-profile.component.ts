@@ -43,9 +43,8 @@ export class HeroProfileComponent implements OnInit {
   }
   colorHeroe : string;
   getTeam(team:string):void{
-    
-    console.log("Color: "+team);
     this.team = team;
+    this.heroesService.group_colors.azul
     this.store.dispatch(heroTeam({heroe:this.heroe, color:this.team,id:this.id}));
     // this.heroesService.teams.set(this.heroe.id, this.team);
   }
@@ -59,10 +58,26 @@ export class HeroProfileComponent implements OnInit {
   
   buscarHero(){
     this.route.params.subscribe(params => {
-      this.id = params.id;
+      
+     this.id = params.id;
       this.store.dispatch(buscarHero());
       this.albumHeores$ = this.store.pipe(select(uniqueHero(this.id)));
-    } )
+      this.heroesService.getHeroe(this.id).subscribe(data =>{
+        this.heroe = data.map((e:Heroe)=>{ 
+          return   {
+            id : e.id,
+            name: e.name,
+            description: e.description,
+            modified: new Date,
+            thumbnail: e.thumbnail,
+            resourceURI: e.resourceURI,
+            teamColor:"azul"
+          }
+        })
+      })
+
+    }
+   )
   }
   
 

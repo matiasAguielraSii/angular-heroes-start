@@ -80,13 +80,11 @@ export class HeroesService {
       this.total = Math.ceil(dato.data.total / this.step);
     })
   }
-
+   cargo:number=0;
   listarHeroes(nameStartsWith?: string, page?: number){
     if (page || page === 0) {
       this.page = page;
-    }
-    
-    
+    } this.cargo ++;
     const url = this.protocol + this.ApiUrl + 'characters?&apikey=f5ef91e82e31aeb7015457c893f6f4c9'
     + '&offset=' + (this.page * this.step)
     + (nameStartsWith ? ('&nameStartsWith=' + nameStartsWith) : '');

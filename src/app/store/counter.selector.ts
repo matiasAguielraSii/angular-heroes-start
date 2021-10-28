@@ -1,13 +1,10 @@
 import { NgIf } from "@angular/common";
-import { createSelector } from "@ngrx/store";
+import { ActionReducer, createFeatureSelector, createSelector, INIT, UPDATE } from "@ngrx/store";
 import { Heroe } from "../classes/heroe";
-import { AppState, HeroeState } from "./app.state";
 
-export const heroeRootSelector = (state:AppState) => state.heroe;
-export const uniqueHeroSelector = (state:AppState) => state.heroe;
-let inicializador = 0;
+
 export const Heroes = createSelector(
-    heroeRootSelector
+    createFeatureSelector('heroe')
     ,
     (heroe:Heroe[])=>{ 
         return [... new Set(heroe.map((_)=> _))]
@@ -16,7 +13,7 @@ export const Heroes = createSelector(
 )
 
 export const uniqueHero = (heroeId:string) =>createSelector(
-    heroeRootSelector,
+    createFeatureSelector('heroe'),
     (heroe:Heroe[])=> {
         let parseNumber = Number(heroeId);
         let uniqHero = heroe.filter( h => { 
@@ -28,6 +25,24 @@ export const uniqueHero = (heroeId:string) =>createSelector(
         return(uniqHero);
     }
 )
+
+export const metaReducerLocalStorage = (reducer: ActionReducer<any>):ActionReducer<any> =>{
+    return (state,action) => {
+        if(action.type === INIT || action.type == UPDATE){
+            const storageValue = localStorage.getItem('state');
+            if(storageValue){
+                try{
+                    return JSON.parse(storageValue);
+                }catch{
+                    localStorage.removeItem('state');
+                }
+            }
+        }
+        const nextState = reducer(state,action);
+        localStorage.setItem("state",JSON.stringify(nextState));
+        return nextState;
+    }
+}
 
 
 
