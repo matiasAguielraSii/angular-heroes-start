@@ -26,12 +26,13 @@ export class ListadoDeHeroesComponent implements OnInit {
   public albumHeores = this.store.pipe(select(Heroes));
   superHeroe:Heroe[];
   dataLoad:boolean = false;
+  
 
   // The child component : spinner
   @ViewChild('spi', { static: true }) spinner;
 
 
-  constructor(private heroesService: HeroesService,
+  constructor(public heroesService: HeroesService,
     private router:Router,
     private store:Store<{heroe:Heroe[]}>
     )
