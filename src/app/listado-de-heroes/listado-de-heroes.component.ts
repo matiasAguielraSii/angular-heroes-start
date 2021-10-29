@@ -103,25 +103,27 @@ export class ListadoDeHeroesComponent implements OnInit {
   
   prevPage():void{
     this.spinner = true;
-    this.heroesService.listarHeroes(this.searchString, this.heroesService.page - 1).subscribe((data) => {
-      let superHeroa = data.map((e:Heroe)=>{ 
-        return {
-          id : e.id,
-          name: e.name,
-          description: e.description,
-          modified: new Date,
-          thumbnail: e.thumbnail,
-          resourceURI: e.resourceURI,
-          teamColor:e.teamColor
-        }
-      }) 
+    // this.heroesService.listarHeroes(this.searchString, this.heroesService.page - 1).subscribe((data) => {
+    //   let superHeroa = data.map((e:Heroe)=>{ 
+    //     return {
+    //       id : e.id,
+    //       name: e.name,
+    //       description: e.description,
+    //       modified: new Date,
+    //       thumbnail: e.thumbnail,
+    //       resourceURI: e.resourceURI,
+    //       teamColor:e.teamColor
+    //     }
+    //   }) 
+
+      this.store.dispatch(backPage());
       this.dataLoad = false;
-      this.store.dispatch(addHeroe({heroe: superHeroa as Heroe[]}));
+      // this.store.dispatch(addHeroe({heroe: superHeroa as Heroe[]}));
       this.spinner = false;
-    },
-    error=>{
-      this.dataLoad = error;
-    });
+    // },
+    // error=>{
+    //   this.dataLoad = error;
+    // });
     
   }
 
