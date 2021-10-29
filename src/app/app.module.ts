@@ -15,6 +15,8 @@ import { StoreModule } from '@ngrx/store';
 import { counterReducer} from './store/counter.reducer';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { metaReducerLocalStorage } from './store/counter.selector';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+
 
 
 @NgModule({
@@ -35,6 +37,7 @@ import { metaReducerLocalStorage } from './store/counter.selector';
     InfiniteScrollModule
   ],
   providers: [HeroesService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ]
 })
 export class AppModule { }

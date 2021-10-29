@@ -115,7 +115,7 @@ export class ListadoDeHeroesComponent implements OnInit {
     //       teamColor:e.teamColor
     //     }
     //   }) 
-
+      this.heroesService.page = this.heroesService.page - 1
       this.store.dispatch(backPage());
       this.dataLoad = false;
       // this.store.dispatch(addHeroe({heroe: superHeroa as Heroe[]}));

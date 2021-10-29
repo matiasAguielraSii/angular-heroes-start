@@ -16,7 +16,5 @@ export class SpinnerComponent implements OnInit {
   ngOnInit() {
   }
 
-  toggle_spinner(): void {
-    this.show_spinner = !this.show_spinner;
-  }
+
 }

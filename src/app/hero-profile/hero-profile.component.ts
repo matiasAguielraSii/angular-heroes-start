@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Heroe } from '../classes/heroe';
 import { HeroesService } from '../heroes.service';
-import { Location } from '@angular/common';
-import { ModalPollComponent } from '../modal-poll/modal-poll.component';
 import { select, Store } from '@ngrx/store';
 
 import {   buscarHero, heroTeam } from '../store/counter.actions';

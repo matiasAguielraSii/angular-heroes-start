@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Heroe } from './classes/heroe';
-import { map, tap, delay } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+//testing
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { inject, TestBed } from '@angular/core/testing';
+import { ResponseOptions, XHRBackend } from '@angular/http';
+import { MockBackend } from '@angular/http/testing';
 
 @Injectable()
 export class HeroesService {
@@ -38,23 +42,6 @@ export class HeroesService {
     const url = this.protocol + this.ApiUrl + 'characters?apikey=f5ef91e82e31aeb7015457c893f6f4c9'
     + '&offset=' + (this.page * this.step)
     + (nameStartsWith ? ('&nameStartsWith=' + nameStartsWith) : '');
-    // this.http.get<any>(url).subscribe((data) => {
-    //   console.log(data);
-    //   this.heroes = [];
-    //   this.total = Math.ceil(data.data.total / this.step);
-    //   data.data.results.forEach( result => {
-    //       this.heroes.push(new Heroe(
-    //         result.id,
-    //         result.name,
-    //         result.description,
-    //         result.modified,
-    //         result.thumbnail,
-    //         result.resourceURI,
-    //         this.getTeamColor(result.id)
-    //       ));
-    //     }
-    //   );
-    // });
     return this.http.get(url).pipe((map((dato:any) => {console.log(dato.data.results); dato => dato.data.results})));
   }
 
@@ -94,3 +81,6 @@ export class HeroesService {
   }
 
 }
+
+
+
