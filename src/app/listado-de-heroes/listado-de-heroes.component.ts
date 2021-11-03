@@ -81,7 +81,8 @@ export class ListadoDeHeroesComponent implements OnInit {
 
   nextPage():void{
       this.dataLoad = true;
-      this.heroesService.listarHeroes(this.searchString, this.heroesService.page + 1).subscribe((data) => {
+      this.heroesService.listarHeroes(this.searchString, this.heroesService.page + 1).subscribe((data:Heroe[]) => {
+       
         let superHeroa = data.map((e:Heroe)=>{ 
           return {
             id : e.id,

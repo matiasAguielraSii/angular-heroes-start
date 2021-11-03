@@ -14,7 +14,6 @@ import { CapitalizePipe } from './capitalize.pipe';
 import { StoreModule } from '@ngrx/store';
 import { counterReducer} from './store/counter.reducer';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { metaReducerLocalStorage } from './store/counter.selector';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 
 
@@ -33,7 +32,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    StoreModule.forRoot({heroe: counterReducer},{metaReducers:[metaReducerLocalStorage]}),
+    StoreModule.forRoot({heroe: counterReducer}),
     InfiniteScrollModule
   ],
   providers: [HeroesService],
